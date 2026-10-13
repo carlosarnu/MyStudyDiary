@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diario de Estudio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="contenedor">
+        <header>
+            <div class="header-contenido">
+                <h1>📚 Diario de Estudio</h1>
+                <div class="header-derecha">
+                    <span id="reloj" class="reloj">00:00:00</span>
+                    <button id="boton-tema" class="boton-tema" aria-label="Cambiar tema">🌙</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Racha actual -->
+        <section class="racha">
+            <div class="racha-numero">🔥 <span id="racha-dias">0</span></div>
+            <div class="racha-texto">días de racha</div>
+        </section>
+
+        <!-- Mejor racha -->
+        <section class="mejor-racha">
+            <span class="mejor-racha-icono">🏆</span>
+            <span class="mejor-racha-texto">Mejor racha: <span id="mejor-racha-dias">0</span> días</span>
+        </section>
+
+        <!-- Tarjeta de objetivo semanal: FUERA de #form-sesion (decisión 2C) -->
+        <section class="objetivo" aria-labelledby="titulo-objetivo">
+            <h2 id="titulo-objetivo">Objetivo semanal</h2>
+            <form id="form-objetivo" novalidate>
+                <div class="campo">
+                    <label for="objetivo-minutos">Minutos que quieres estudiar esta semana</label>
+                    <input type="number" id="objetivo-minutos" min="1" max="10080" step="1"
+                           inputmode="numeric" placeholder="Ej: 300"
+                           aria-describedby="objetivo-error">
+                </div>
+                <button type="submit" id="btn-objetivo">Guardar objetivo</button>
+            </form>
+            <p id="objetivo-error" class="error" role="alert"></p>
+            <p id="objetivo-vacio" class="objetivo-vacio">Aún no tienes objetivo. Fija los minutos que quieres estudiar cada semana.</p>
+        </section>
+
+        <!-- Formulario para nueva sesión -->
+        <section class="formulario">
+            <h2>Registrar sesión</h2>
+            <form id="form-sesion">
+                <div class="campo">
+                    <label for="fecha">Fecha</label>
+                    <input type="date" id="fecha" required>
+                </div>
+                <div class="campo">
+                    <label for="tema">Tema</label>
+                    <input type="text" id="tema" placeholder="¿Qué estudiaste?" required>
+                </div>
+                <div class="campo">
+                    <label for="minutos">Minutos</label>
+                    <input type="number" id="minutos" min="1" placeholder="Ej: 45" required>
+                </div>
+                <p id="minutos-semana" class="minutos-semana">Esta semana: 0 min</p>
+                <p id="progreso-detalle" class="progreso-detalle" hidden></p>
+                <p id="dias-mes" class="dias-mes">0 días este mes</p>
+                <button type="submit" id="btn-guardar">Guardar sesión</button>
+                <button type="button" id="btn-cancelar" class="btn-cancelar" hidden>Cancelar</button>
+            </form>
+            <p id="mensaje-error" class="error"></p>
+        </section>
+
+        <!-- Mapa de calor -->
+        <section class="mapa-calor">
+            <div class="mapa-controles">
+                <h2>Mapa de estudio</h2>
+                <div class="mapa-navegacion">
+                    <button id="btn-mes-prev" aria-label="Mes anterior" type="button">‹</button>
+                    <span id="mes-actual" aria-live="polite">Octubre 2026</span>
+                    <button id="btn-mes-next" aria-label="Mes siguiente" type="button">›</button>
+                </div>
+                <div class="mapa-selector">
+                    <label for="num-meses">Meses visibles:</label>
+                    <select id="num-meses">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                </div>
+            </div>
+            <div id="mapa-calor" class="mapa-contenedor"></div>
+            <div id="tooltip" class="tooltip" hidden></div>
+        </section>
+
+        <!-- Lista de sesiones -->
+        <section class="sesiones">
+            <h2>Historial</h2>
+
+            <!-- Buscador (spec 004): dentro del historial, entre el <h2> y la lista (RF-1).
+                 Fuera de #form-sesion y de la tarjeta de objetivo: no comparte estado con ellos. -->
+            <form id="form-busqueda" class="busqueda" role="search">
+                <div class="campo">
+                    <label for="buscador">Buscar en el historial</label>
+                    <input type="search" id="buscador"
+                           placeholder="Tema o fecha, p. ej. octubre o 2026-10"
+                           autocomplete="off">
+                </div>
+                <button type="button" id="btn-limpiar" class="btn-limpiar">Limpiar búsqueda</button>
+            </form>
+
+            <ul id="lista-sesiones"></ul>
+            <!-- Región viva (RF-11): con resultados queda vacía; solo anuncia el aviso de 0
+                 coincidencias. Nunca cifras ni "X de Y" (decisión cerrada del usuario). -->
+            <p id="aviso-busqueda" class="vacio" role="status" aria-live="polite"></p>
+            <p id="sin-sesiones" class="vacio">Aún no hay sesiones registradas.</p>
+        </section>
+    </div>
+
+    <script src="logica-mapa.js"></script>
+    <script src="logica-objetivo.js"></script>
+    <script src="logica-busqueda.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

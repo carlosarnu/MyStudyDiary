@@ -1,0 +1,686 @@
+/* ===== Variables y base ===== */
+:root {
+    --color-fondo: #FAF7F2;
+    --color-tarjeta: #FFFFFF;
+    --color-primario: #E63946;
+    --color-primario-hover: #C1121F;
+    --color-texto: #1A1A2E;
+    --color-texto-suave: #4A4A68;
+    --color-borde: #E5E0D8;
+    /* Rojo de texto (errores y total semanal) con contraste AA sobre tarjeta
+       blanca y sobre el fondo: #E63946 solo daba 4,17:1 */
+    --color-error: #C1121F;
+    --color-destacado: #C1121F;
+    --color-exito: #17756A;
+    --radio: 8px;
+    --sombra: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --fuente-display: Georgia, 'Times New Roman', serif;
+    --fuente-texto: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+[data-tema="oscuro"] {
+    --color-fondo: #1A1A2E;
+    --color-tarjeta: #16213E;
+    --color-primario: #E63946;
+    --color-primario-hover: #F4A261;
+    --color-texto: #FAF7F2;
+    --color-texto-suave: #A8A8B8;
+    --color-borde: #2A2A4A;
+    --color-error: #F4A261;
+    --color-destacado: #F4A261;
+    --color-exito: #57CC99;
+    --sombra: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--fuente-texto);
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    line-height: 1.5;
+    padding: 1rem;
+}
+
+.contenedor {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* ===== Cabecera ===== */
+header {
+    margin-bottom: 1.5rem;
+}
+
+.header-contenido {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+header h1 {
+    font-family: var(--fuente-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.header-derecha {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.reloj {
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-texto-suave);
+}
+
+.boton-tema {
+    background: var(--color-tarjeta);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+    padding: 0.4rem 0.6rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: var(--sombra);
+    transition: transform 0.15s;
+}
+
+.boton-tema:hover {
+    transform: scale(1.05);
+}
+
+/* ===== Racha ===== */
+.racha {
+    background: var(--color-tarjeta);
+    border-radius: var(--radio);
+    padding: 1.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    box-shadow: var(--sombra);
+    border: 1px solid var(--color-borde);
+}
+
+.racha-numero {
+    font-family: var(--fuente-display);
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-primario);
+}
+
+.racha-texto {
+    font-size: 0.95rem;
+    color: var(--color-texto-suave);
+    margin-top: 0.25rem;
+}
+
+/* ===== Mejor racha ===== */
+.mejor-racha {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--color-tarjeta);
+    border-radius: var(--radio);
+    padding: 0.85rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--sombra);
+    border: 1px solid var(--color-borde);
+}
+
+.mejor-racha-icono {
+    font-size: 1.25rem;
+}
+
+.mejor-racha-texto {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-texto);
+}
+
+/* ===== Formulario ===== */
+.formulario,
+.sesiones {
+    background: var(--color-tarjeta);
+    border-radius: var(--radio);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--sombra);
+    border: 1px solid var(--color-borde);
+}
+
+.formulario h2,
+.sesiones h2 {
+    font-family: var(--fuente-display);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.campo {
+    margin-bottom: 0.85rem;
+}
+
+.campo label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    color: var(--color-texto-suave);
+}
+
+.campo input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.15s;
+}
+
+.campo input:focus {
+    outline: none;
+    border-color: var(--color-primario);
+}
+
+.minutos-semana {
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    /* --color-primario (#E63946) no llegaba a 4,5:1; se usa el rojo de texto
+       con contraste AA en ambos temas */
+    color: var(--color-destacado);
+    margin-top: 0.5rem;
+}
+
+.dias-mes {
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-primario);
+    margin-top: 0.25rem;
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 0.7rem;
+    background-color: var(--color-primario);
+    color: #fff;
+    border: none;
+    border-radius: var(--radio);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s;
+    margin-top: 0.5rem;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--color-primario-hover);
+}
+
+.error {
+    color: var(--color-error);
+    font-size: 0.85rem;
+    margin-top: 0.6rem;
+    min-height: 1.2em;
+}
+
+/* ===== Objetivo semanal ===== */
+
+/* Tarjeta: mismo patrón que .formulario */
+.objetivo {
+    background: var(--color-tarjeta);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--sombra);
+}
+
+.objetivo h2 {
+    font-family: var(--fuente-display);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+/* Invitación cuando aún no hay objetivo (RF-9) */
+.objetivo-vacio {
+    color: var(--color-texto-suave);
+    font-size: 0.9rem;
+    margin-top: 0.6rem;
+}
+
+/* Foco visible en el campo del objetivo (accesibilidad) */
+#objetivo-minutos:focus {
+    outline: 2px solid var(--color-primario);
+    outline-offset: 2px;
+}
+
+/* Detalle de progreso junto al total semanal (RF-3) */
+.progreso-detalle {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--color-texto-suave);
+    margin-top: 0.35rem;
+}
+
+/* Indicador de meta cumplida (RF-8): color + borde + texto con "🎉"
+   para distinguirse también sin depender solo del color */
+.progreso-detalle.cumplida {
+    color: var(--color-exito);
+    border: 1px solid var(--color-exito);
+    border-radius: var(--radio);
+    font-weight: 700;
+    padding: 0.25rem 0.5rem;
+}
+
+/* ===== Lista de sesiones ===== */
+#lista-sesiones {
+    list-style: none;
+}
+
+#lista-sesiones li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--color-borde);
+}
+
+#lista-sesiones li:last-child {
+    border-bottom: none;
+}
+
+.sesion-info {
+    flex: 1;
+}
+
+.sesion-tema {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.sesion-detalle {
+    font-size: 0.8rem;
+    color: var(--color-texto-suave);
+}
+
+.sesion-hora {
+    font-size: 0.75rem;
+    color: var(--color-texto-suave);
+    font-variant-numeric: tabular-nums;
+}
+
+.sesion-minutos {
+    font-weight: 700;
+    color: var(--color-primario);
+    font-size: 0.9rem;
+    white-space: nowrap;
+    margin-left: 0.75rem;
+}
+
+.vacio {
+    color: var(--color-texto-suave);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+/* ===== Mapa de calor ===== */
+.mapa-calor {
+    background: var(--color-tarjeta);
+    border-radius: var(--radio);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--sombra);
+    border: 1px solid var(--color-borde);
+}
+
+.mapa-controles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.mapa-controles h2 {
+    font-family: var(--fuente-display);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.mapa-navegacion {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mapa-navegacion button {
+    background: var(--color-tarjeta);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+    padding: 0.4rem 0.75rem;
+    font-size: 1.25rem;
+    cursor: pointer;
+    box-shadow: var(--sombra);
+    transition: transform 0.1s;
+}
+
+.mapa-navegacion button:hover {
+    transform: scale(1.1);
+}
+
+.mapa-navegacion button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#mes-actual {
+    font-family: var(--fuente-display);
+    font-size: 1rem;
+    font-weight: 600;
+    min-width: 140px;
+    text-align: center;
+}
+
+.mapa-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mapa-selector label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-texto-suave);
+}
+
+.mapa-selector select {
+    padding: 0.4rem 0.75rem;
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+    background: var(--color-tarjeta);
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.mapa-contenedor {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Cada mes */
+.mapa-mes {
+    background: var(--color-fondo);
+    border-radius: var(--radio);
+    padding: 1rem;
+    border: 1px solid var(--color-borde);
+    box-shadow: var(--sombra);
+}
+
+.mapa-mes-cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    font-family: var(--fuente-display);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.mapa-mes-grid {
+    display: grid;
+    /* minmax(0, 1fr): sin el 0 mínimo, el aspect-ratio:1 de .celda eleva el mínimo
+       automático de cada pista y las 7 columnas desbordan a 375 px. */
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 2px;
+}
+
+.mapa-mes-fechas {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 2px;
+    margin-bottom: 4px;
+}
+
+.mapa-mes-fechas span {
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--color-texto-suave);
+}
+
+.mapa-mes-grid .celda {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.mapa-mes-grid .celda:hover {
+    transform: scale(1.1);
+    z-index: 1;
+}
+
+.mapa-mes-grid .celda.estudiado {
+    background-color: #E63946;
+    color: #fff;
+}
+
+.mapa-mes-grid .celda.sin-estudio {
+    background-color: #E5E0D8;
+    color: #4A4A68;
+}
+
+.mapa-mes-grid .celda.futuro {
+    background-color: #F0EDE8;
+    color: #A8A8B8;
+    border: 1px dashed #D0CCC4;
+}
+
+.mapa-mes-grid .celda.vacio {
+    background: transparent;
+    cursor: default;
+    color: transparent;
+}
+
+[data-tema="oscuro"] .mapa-mes-grid .celda.estudiado {
+    background-color: #E63946;
+    color: #fff;
+}
+
+[data-tema="oscuro"] .mapa-mes-grid .celda.sin-estudio {
+    background-color: #2A2A4A;
+    color: #A8A8B8;
+}
+
+[data-tema="oscuro"] .mapa-mes-grid .celda.futuro {
+    background-color: #1E1E3A;
+    color: #6A6A8A;
+    border: 1px dashed #3A3A5A;
+}
+
+[data-tema="oscuro"] .mapa-mes-grid .celda.vacio {
+    background: transparent;
+}
+
+/* ===== Edición de sesiones ===== */
+
+/* Botón editar en historial */
+.btn-editar {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.25rem 0.5rem;
+    color: var(--color-texto-suave);
+    transition: color 0.15s, transform 0.15s;
+    border-radius: var(--radio);
+    margin-left: 0.5rem;
+}
+
+.btn-editar:hover {
+    color: var(--color-primario);
+    transform: scale(1.2);
+}
+
+.btn-editar:focus {
+    outline: 2px solid var(--color-primario);
+    outline-offset: 2px;
+}
+
+/* Formulario en modo edición */
+.formulario.editando {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 2px rgba(230, 57, 70, 0.2);
+}
+
+/* Botón cancelar */
+.btn-cancelar {
+    background: var(--color-texto-suave);
+    color: white;
+    border: none;
+    border-radius: var(--radio);
+    padding: 0.7rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: opacity 0.15s;
+}
+
+.btn-cancelar:hover {
+    opacity: 0.8;
+}
+
+.btn-cancelar:focus {
+    outline: 2px solid var(--color-primario);
+    outline-offset: 2px;
+}
+
+/* Botón guardar en modo edición */
+#btn-guardar.guardando {
+    background-color: var(--color-primario-hover);
+}
+
+/* Responsive móvil */
+.tooltip {
+    position: absolute;
+    background: var(--color-texto);
+    color: var(--color-fondo);
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    z-index: 100;
+    pointer-events: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+[data-tema="oscuro"] .tooltip {
+    background: #FAF7F2;
+    color: #1A1A2E;
+}
+
+/* Responsive móvil */
+@media (max-width: 480px) {
+    .mapa-controles {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .mapa-navegacion {
+        justify-content: center;
+    }
+    
+    .mapa-selector {
+        justify-content: center;
+    }
+    
+    .mapa-mes-grid .celda {
+        font-size: 0.65rem;
+    }
+}
+
+/* ===== Buscador del historial (spec 004) ===== */
+
+/* Formulario integrado en la tarjeta del historial (hereda el fondo de
+   .sesiones): columna, con el hueco entre campo y botón dado por el gap */
+.busqueda {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;   /* separación con la lista de sesiones */
+}
+
+.busqueda .campo {
+    margin-bottom: 0;      /* el hueco lo pone el gap, no el margen heredado */
+}
+
+/* El input hereda .campo input (width:100%, borde, radio var(--radio),
+   tipografía 1rem). El foco visible (RF-11) lo aporta el id: gana a la regla
+   global .campo input:focus { outline: none }, igual que #objetivo-minutos:focus */
+#buscador:focus {
+    outline: 2px solid var(--color-primario);
+    outline-offset: 2px;
+    border-color: var(--color-primario);
+}
+
+#buscador::placeholder {
+    color: var(--color-texto-suave);
+}
+
+/* Botón secundario de "Limpiar búsqueda": borde y texto de la paleta, sin el
+   relleno rojo del primario "Guardar sesión". Con las variables existentes,
+   legible en claro y en oscuro sin reglas adicionales por tema.
+   Padding 0.65rem 1rem → altura ≈ 44 px: cómodo al toque en móvil */
+.btn-limpiar {
+    align-self: flex-start;
+    background: transparent;
+    border: 1px solid var(--color-borde);
+    color: var(--color-texto);
+    border-radius: var(--radio);
+    padding: 0.65rem 1rem;
+    font-size: 0.9rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+}
+
+.btn-limpiar:hover {
+    border-color: var(--color-primario);
+    color: var(--color-primario);
+}
+
+.btn-limpiar:focus {
+    outline: 2px solid var(--color-primario);
+    outline-offset: 2px;
+}
+
+/* Aviso de la búsqueda (RF-6): siempre un mensaje neutro en texto suave, como
+   .vacio y nunca el rojo de .error. La regla por id es a propósito: si en
+   T5/T6 se le añade una clase de "sin resultados", el color sigue ganando el
+   suave y el aviso no se confunde con un error */
+#aviso-busqueda {
+    color: var(--color-texto-suave);
+}
